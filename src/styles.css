@@ -1,1 +1,10 @@
 /* You can add global styles to this file, and also import other style files */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Opcional: Para asegurar que el html y body ocupen todo el alto */
+html, body {
+  height: 100%;
+  margin: 0;
+}

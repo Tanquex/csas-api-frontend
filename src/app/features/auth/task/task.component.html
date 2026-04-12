@@ -1,0 +1,65 @@
+<div class="max-w-4xl mx-auto p-6 mt-10">
+  
+  <header class="mb-10 flex justify-between items-end">
+    <div>
+      <h1 class="text-3xl font-extrabold text-slate-900">Mis Tareas</h1>
+      <p class="text-slate-500">Gestiona tus actividades diarias de CSAS API</p>
+    </div>
+    <span class="bg-indigo-100 text-indigo-700 px-4 py-1.5 rounded-full text-sm font-bold">
+      {{ tasks().length }} Total
+    </span>
+  </header>
+
+  <section class="bg-white/70 backdrop-blur-md p-6 rounded-3xl shadow-xl border border-white mb-10">
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+      <input type="text" [(ngModel)]="newTaskName" placeholder="Título de la tarea..."
+             class="px-4 py-3 rounded-xl border border-slate-200 focus:ring-2 focus:ring-indigo-300 focus:outline-none transition-all">
+      
+      <input type="text" [(ngModel)]="newTaskDescription" placeholder="Descripción corta..."
+             class="px-4 py-3 rounded-xl border border-slate-200 focus:ring-2 focus:ring-indigo-300 focus:outline-none transition-all">
+    </div>
+
+    <div class="mt-4 flex items-center gap-3 bg-slate-50 p-3 rounded-2xl w-fit border border-slate-100">
+    <span class="text-sm font-semibold text-slate-700">¿Es prioritaria?</span>
+    <button (click)="newTaskPriority = !newTaskPriority" type="button"
+            [class]="newTaskPriority ? 'bg-amber-400' : 'bg-slate-300'"
+            class="relative inline-flex h-6 w-11 items-center rounded-full transition-colors duration-300">
+      <span [class]="newTaskPriority ? 'translate-x-6' : 'translate-x-1'"
+            class="inline-block h-4 w-4 transform rounded-full bg-white transition-transform duration-300"></span>
+    </button>
+  </div>
+
+    <button (click)='addTask()' 
+            class="mt-4 w-full bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-3 rounded-xl shadow-lg shadow-indigo-100 transition-all active:scale-95">
+      + Agregar Nueva Tarea
+    </button>
+  </section>
+
+  <div class="space-y-4">
+    @for (item of tasks(); track item.id) {
+      <div class="group bg-white p-5 rounded-2xl shadow-sm border border-slate-100 flex justify-between items-center transition-all hover:shadow-md hover:border-indigo-100">
+        <div class="flex items-center gap-4">
+          <div [class]="item.priority ? 'bg-amber-400' : 'bg-slate-200'" class="w-2 h-10 rounded-full"></div>
+          
+          <div>
+            <h3 class="font-bold text-slate-800">{{ item.name }}</h3>
+            <p class="text-sm text-slate-500">{{ item.description }}</p>
+          </div>
+        </div>
+
+        <div class="flex gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
+          <button (click)="deleteTask(item.id)" 
+                  class="p-2 text-rose-500 hover:bg-rose-50 rounded-lg transition-colors">
+            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path>
+            </svg>
+          </button>
+        </div>
+      </div>
+    } @empty {
+      <div class="text-center py-20 bg-slate-50 rounded-3xl border-2 border-dashed border-slate-200">
+        <p class="text-slate-400 font-medium">No tienes tareas pendientes. ¡Tómate un café! ☕</p>
+      </div>
+    }
+  </div>
+</div>
