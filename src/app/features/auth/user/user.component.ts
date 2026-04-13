@@ -18,10 +18,10 @@ export class UserComponent {
 
   users = signal<User[]>([]);
 
-  // 🔹 Usuario logueado (ajústalo según tu auth real)
+  // 
   currentUserId = 0;
 
-  // 🔹 Modal
+  // 
   isModalOpen = false;
   selectedUser: User | null = null;
 
@@ -31,7 +31,7 @@ export class UserComponent {
   ngOnInit() {
     this.loadUsers();
 
-    // ⚠️ Aquí deberías sacar el ID del token
+    // 
     const user = JSON.parse(localStorage.getItem('user') || '{}');
     this.currentUserId = user?.id || 0;
   }
@@ -39,11 +39,14 @@ export class UserComponent {
   loadUsers() {
     this.userSvc.getUsers().subscribe({
       next: (data) => this.users.set(data),
-      error: (err) => console.error(err)
+      error: (err) => {
+      console.error(err);
+      alert('Error al cargar usuarios');
+      }
     });
   }
 
-  // 🟢 EDITAR
+  // 
   openEditModal(user: User) {
     this.selectedUser = user;
     this.editName = user.name;
@@ -59,6 +62,11 @@ export class UserComponent {
   updateUser() {
     if (!this.selectedUser?.id) return;
 
+    if (!this.editName.trim() || !this.editUsername.trim()) {
+    alert('Nombre y usuario son obligatorios');
+    return;
+  }
+
     const updatedUser = {
       name: this.editName,
       username: this.editUsername
@@ -70,15 +78,21 @@ export class UserComponent {
           prev.map(u => u.id === res.id ? res : u)
         );
         this.closeModal();
-      }
+      },
+    error: (err) => {
+      console.error(err);
+
+      const msg = err?.error?.error || 'Error al actualizar usuario';
+      alert(msg);
+    }
     });
   }
 
-  // 🔴 ELIMINAR
+  
   deleteUser(id: number | undefined) {
     if (!id) return;
 
-    // 🚫 No eliminarse a sí mismo
+    //  No eliminarse a sí mismo
     if (id === this.currentUserId) {
       alert('No puedes eliminar tu propio usuario');
       return;
@@ -87,7 +101,13 @@ export class UserComponent {
     this.userSvc.deleteUser(id).subscribe({
       next: () => {
         this.users.update(prev => prev.filter(u => u.id !== id));
-      }
+      },
+    error: (err) => {
+      console.error(err);
+
+      const msg = err?.error?.error || 'Error al eliminar usuario';
+      alert(msg);
+    }
     });
   }
 }

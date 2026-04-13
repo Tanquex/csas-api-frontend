@@ -43,7 +43,10 @@ editPriority = false;
   }
 
   addTask() {
-    if (!this.newTaskName.trim()) return;
+    if (!this.newTaskName.trim()) {
+    alert('El nombre de la tarea es obligatorio');
+    return;
+  }
 
     const task: Task = {
       name: this.newTaskName,
@@ -58,7 +61,14 @@ editPriority = false;
         this.newTaskName = '';
         this.newTaskDescription = '';
         this.newTaskPriority = false;
-      }
+      },
+      error: (err) => {
+      console.error(err);
+
+      
+      const msg = err?.error?.error || 'Error al crear la tarea';
+      alert(msg);
+    }
     });
   }
 
@@ -73,6 +83,10 @@ editPriority = false;
 
   updateTask() {
   if (!this.selectedTask?.id) return;
+   if (!this.editName.trim()) {
+    alert('El nombre no puede estar vacío');
+    return;
+  }
 
   const updatedTask: Task = {
     name: this.editName,
@@ -86,6 +100,12 @@ editPriority = false;
         prev.map(t => t.id === res.id ? res : t)
       );
       this.closeModal();
+    },
+     error: (err) => {
+      console.error(err);
+
+      const msg = err?.error?.error || 'Error al actualizar la tarea';
+      alert(msg);
     }
   });
 }
