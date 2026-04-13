@@ -3,6 +3,6 @@ export interface Task {
   name: string;
   description: string;
   priority: boolean;
-  user_id: number;
+  user_id?: number;
   created_at?: string | Date;
 }

@@ -15,6 +15,27 @@
       </div>
 
       @if (authSvc.currentUser()) {
+        <div class="hidden md:flex items-center gap-4">
+
+  <a routerLink="/tasks"
+     routerLinkActive="bg-indigo-100 text-indigo-700"
+     class="px-4 py-2 rounded-xl text-slate-600 font-medium hover:bg-slate-100 transition-all">
+    Tareas
+  </a>
+
+  <a routerLink="/users"
+     routerLinkActive="bg-indigo-100 text-indigo-700"
+     class="px-4 py-2 rounded-xl text-slate-600 font-medium hover:bg-slate-100 transition-all">
+    Usuarios
+  </a>
+
+  <a routerLink="/register"
+     routerLinkActive="bg-indigo-100 text-indigo-700"
+     class="px-4 py-2 rounded-xl text-slate-600 font-medium hover:bg-slate-100 transition-all">
+    Registrar
+  </a>
+
+</div>
         <div class="flex items-center gap-6">
           <div class="hidden md:flex flex-col items-end">
             <span class="text-sm font-semibold text-slate-900">{{ authSvc.currentUser()?.name }}</span>

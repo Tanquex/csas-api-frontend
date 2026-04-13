@@ -2,6 +2,8 @@ import { Routes } from '@angular/router';
 import { LoginComponent } from './features/auth/login/login.component';
 import { TaskComponent } from './features/auth/task/task.component';
 import { authGuard } from './core/guards/auth.guard';
+import { UserComponent } from './features/auth/user/user.component';
+import { RegisterComponent } from './features/auth/register/register.component';
 
 export const routes: Routes = [
     {
@@ -13,6 +15,17 @@ export const routes: Routes = [
     component:TaskComponent,
     canActivate: [authGuard],
   },
+  {
+    path: 'users',
+    component:UserComponent,
+    canActivate: [authGuard],
+  },
+  {
+    path: 'register',
+    component:RegisterComponent,
+    
+  },
+
 //   {
 //     path: 'register',
 //     loadComponent: () => import('./features/auth/register/register.component').then(m => m.RegisterComponent)

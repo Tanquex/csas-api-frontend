@@ -22,6 +22,15 @@ export class TaskComponent {
   newTaskDescription = '';
   newTaskPriority =false;
 
+  // Para el model
+isModalOpen = false;
+selectedTask: Task | null = null;
+
+// Campos para editar la tarea
+editName = '';
+editDescription = '';
+editPriority = false;
+
   ngOnInit() {
     this.loadTasks();
   }
@@ -40,7 +49,7 @@ export class TaskComponent {
       name: this.newTaskName,
       description: this.newTaskDescription,
       priority: this.newTaskPriority,
-      user_id: 1 // Se envía 0 porque el Back lo sobreescribirá con el token
+      // user_id: 1 // Se envía 0 porque el Back lo sobreescribirá con el token
     };
 
     this.taskSvc.createTask(task).subscribe({
@@ -61,4 +70,36 @@ export class TaskComponent {
       }
     });
   }
+
+  updateTask() {
+  if (!this.selectedTask?.id) return;
+
+  const updatedTask: Task = {
+    name: this.editName,
+    description: this.editDescription,
+    priority: this.editPriority
+  };
+
+  this.taskSvc.updateTask(this.selectedTask.id, updatedTask).subscribe({
+    next: (res) => {
+      this.tasks.update(prev =>
+        prev.map(t => t.id === res.id ? res : t)
+      );
+      this.closeModal();
+    }
+  });
+}
+
+  openEditModal(task: Task) {
+  this.selectedTask = task;
+  this.editName = task.name;
+  this.editDescription = task.description;
+  this.editPriority = task.priority;
+  this.isModalOpen = true;
+}
+
+closeModal() {
+  this.isModalOpen = false;
+  this.selectedTask = null;
+}
 }
